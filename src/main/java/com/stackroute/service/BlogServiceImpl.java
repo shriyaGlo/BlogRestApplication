@@ -35,13 +35,18 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public Blog deleteBlog(int id) {
 		Blog blog = blogRepository.findById(id).orElse(null);
-		blogRepository.deleteById(id);
+		if(blog != null) {
+			blogRepository.deleteById(blogRepository.findById(id).orElse(null).getBlogId());
+		}
 		return blog;
 	}
 
 	@Override
 	public Blog updateBlog(Blog blog) {
-		return blogRepository.save(blog);
+		Blog blogToUpdate = blogRepository.findById(blog.getBlogId()).orElse(null);
+		if(blogToUpdate == null)
+			return null;
+		return blogRepository.save(blogRepository.findById(blog.getBlogId()).orElse(null));
 	}
 
 }
